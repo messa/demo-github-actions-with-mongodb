@@ -1,4 +1,5 @@
 """Tests for hello_world MongoDB operations."""
+import os
 import subprocess
 import sys
 
@@ -11,7 +12,8 @@ from hello_world.main import sample_operations
 @pytest.fixture
 def mongo_client():
     """Fixture that provides a MongoDB client for testing."""
-    client = MongoClient("mongodb://localhost:27017/")
+    mongodb_uri = os.getenv("MONGODB_URI", "mongodb://localhost:27017/")
+    client = MongoClient(mongodb_uri)
     yield client
     client.close()
 

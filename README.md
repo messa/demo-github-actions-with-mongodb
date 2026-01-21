@@ -17,8 +17,20 @@ This repository contains a simple Python project that demonstrates MongoDB integ
 ### Requirements
 
 - Python 3.12+
-- MongoDB running on localhost:27017
+- MongoDB running on localhost:27017 (or custom URI via environment variable)
 - uv package manager
+
+### Configuration
+
+The application uses the `MONGODB_URI` environment variable to connect to MongoDB. If not set, it defaults to `mongodb://localhost:27017/`.
+
+To use a custom MongoDB URI:
+
+```bash
+export MONGODB_URI="mongodb://localhost:27017/"
+# Or for remote MongoDB:
+export MONGODB_URI="mongodb://user:password@hostname:27017/"
+```
 
 ### Installation
 
@@ -77,6 +89,12 @@ To run all tests:
 
 ```bash
 uv run pytest -v tests
+```
+
+To use a custom MongoDB URI for testing:
+
+```bash
+MONGODB_URI="mongodb://localhost:27017/" uv run pytest -v tests
 ```
 
 To run specific tests:
