@@ -35,6 +35,6 @@ jobs:
         run: uv sync
 
       - name: Run tests
-        run: uv run pytest -v
+        run: uv run pytest -v tests
         env:
           MONGODB_URI: mongodb://localhost:27017
