@@ -11,7 +11,12 @@ from hello_world.main import sample_operations
 def mongo_client():
     """Fixture that provides a MongoDB client for testing."""
     mongodb_uri = os.getenv("MONGODB_URI", "mongodb://localhost:27017/")
-    client = MongoClient(mongodb_uri)
+    client = MongoClient(
+        mongodb_uri,
+        serverSelectionTimeoutMS=5000,
+        connectTimeoutMS=5000,
+        socketTimeoutMS=5000
+    )
     yield client
     client.close()
 

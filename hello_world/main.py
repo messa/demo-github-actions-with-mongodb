@@ -23,7 +23,12 @@ def hello_world_main():
     """Main function that connects to MongoDB and performs operations."""
     # Connect to MongoDB using URI from environment variable or default
     mongodb_uri = os.getenv("MONGODB_URI", "mongodb://localhost:27017/")
-    client = MongoClient(mongodb_uri)
+    client = MongoClient(
+        mongodb_uri,
+        serverSelectionTimeoutMS=5000,
+        connectTimeoutMS=5000,
+        socketTimeoutMS=5000
+    )
     
     # Use a test database
     db = client.hello_world_db
