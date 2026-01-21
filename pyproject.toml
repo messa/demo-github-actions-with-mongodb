@@ -8,6 +8,13 @@ dependencies = [
     "pymongo>=4.16.0",
 ]
 
+[project.scripts]
+hello-world = "hello_world.main:hello_world_main"
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
 [dependency-groups]
 dev = [
     "pytest>=9.0.2",

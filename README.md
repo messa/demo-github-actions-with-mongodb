@@ -11,12 +11,26 @@ This repository contains a simple Python project that demonstrates MongoDB integ
   - `main.py` - Contains the main functions for MongoDB operations
     - `hello_world_main()` - Main entry point that connects to MongoDB
     - `sample_operations(db)` - Performs insert_one and find operations
+- `tests/` - Test suite
+  - `test_smoke.py` - Contains pytest tests for MongoDB operations
 
 ### Requirements
 
 - Python 3.12+
-- MongoDB running on localhost:27017
+- MongoDB running on localhost:27017 (or custom URI via environment variable)
 - uv package manager
+
+### Configuration
+
+The application uses the `MONGODB_URI` environment variable to connect to MongoDB. If not set, it defaults to `mongodb://localhost:27017/`.
+
+To use a custom MongoDB URI:
+
+```bash
+export MONGODB_URI="mongodb://localhost:27017/"
+# Or for remote MongoDB:
+export MONGODB_URI="mongodb://user:password@hostname:27017/"
+```
 
 ### Installation
 
@@ -38,11 +52,72 @@ To run the hello_world application:
 uv run python -m hello_world.main
 ```
 
+Or using the console script:
+
+```bash
+uv run hello-world
+```
+
 This will:
 1. Connect to MongoDB at localhost:27017
 2. Insert a document into the `test_collection`
 3. Find and display the inserted document
 4. Close the connection
+
+### Testing
+
+The project includes pytest tests that verify MongoDB operations.
+
+#### Prerequisites for Testing
+
+Make sure MongoDB is running on localhost:27017 before running tests:
+
+```bash
+# On systems with systemd (Ubuntu/Debian)
+sudo systemctl start mongodb
+
+# On macOS with Homebrew
+brew services start mongodb-community
+
+# Or run MongoDB in Docker
+docker run -d -p 27017:27017 mongo:7
+```
+
+#### Running Tests Locally
+
+To run all tests:
+
+```bash
+uv run pytest -v tests
+```
+
+To use a custom MongoDB URI for testing:
+
+```bash
+MONGODB_URI="mongodb://localhost:27017/" uv run pytest -v tests
+```
+
+To run specific tests:
+
+```bash
+# Run only the direct function test
+uv run pytest -v tests/test_smoke.py::test_sample_operations
+
+# Run only the e2e test
+uv run pytest -v tests/test_smoke.py::test_e2e_hello_world
+```
+
+#### Test Description
+
+- **test_sample_operations** - Directly tests the `sample_operations()` function by calling it with a test database and verifying the MongoDB operations
+- **test_e2e_hello_world** - End-to-end test that runs the entire application via subprocess and verifies the output
+
+#### GitHub Actions
+
+Tests run automatically in GitHub Actions on push and pull requests. The workflow is configured to:
+- Test against Python 3.11, 3.13, and 3.14
+- Use MongoDB 7 service container
+- Run all pytest tests
 
 ### Development
 
