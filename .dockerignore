@@ -32,10 +32,6 @@ env/
 # Tests
 tests/
 
-# Documentation
-README.md
-*.md
-
 # CI/CD
 .github/
 
