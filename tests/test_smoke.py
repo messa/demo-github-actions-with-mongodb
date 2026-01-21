@@ -42,15 +42,14 @@ def test_sample_operations(test_db):
 
 
 def test_e2e_hello_world():
-    """End-to-end test running the project via subprocess."""
-    # Run the hello-world console script
+    """End-to-end test running the application via subprocess."""
+    # Run the application as a module
     result = subprocess.run(
         [sys.executable, "-m", "hello_world.main"],
         capture_output=True,
         text=True,
         timeout=10
     )
-    
     # Check that the command executed successfully
     assert result.returncode == 0, f"Process failed with stderr: {result.stderr}"
     
