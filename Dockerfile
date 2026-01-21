@@ -15,6 +15,8 @@ COPY hello_world ./hello_world
 RUN uv sync --frozen
 
 # Set environment variable for MongoDB URI
+# Default is localhost, but should be overridden when running in containers
+# Example: docker run -e MONGODB_URI=mongodb://mongo:27017/ hello-world
 ENV MONGODB_URI=mongodb://localhost:27017/
 
 # Expose port (if needed for future services)
