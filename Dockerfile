@@ -12,7 +12,7 @@ COPY pyproject.toml uv.lock ./
 COPY hello_world ./hello_world
 
 # Install dependencies
-RUN uv sync --frozen
+RUN uv sync --frozen --no-dev
 
 # Set environment variable for MongoDB URI
 # Default is localhost, but should be overridden when running in containers
