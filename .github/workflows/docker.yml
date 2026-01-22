@@ -1,0 +1,66 @@
+name: Docker Build
+
+on:
+  push:
+    branches: [main, master, production]
+  pull_request:
+    branches: [main, master, production]
+
+jobs:
+  docker-build:
+    runs-on: ubuntu-latest
+    
+    permissions:
+      contents: read
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Build Docker image
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          push: false
+          tags: hello-world:test
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+
+      # Commented out: AWS ECR login and push
+      # Uncomment and configure the following steps to push to AWS ECR
+      #
+      # - name: Configure AWS credentials
+      #   uses: aws-actions/configure-aws-credentials@v4
+      #   with:
+      #     aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+      #     aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+      #     aws-region: eu-central-1  # Change to your AWS region
+      #
+      # - name: Login to Amazon ECR
+      #   id: login-ecr
+      #   uses: aws-actions/amazon-ecr-login@v2
+      #
+      # - name: Determine image tag
+      #   id: image-tag
+      #   run: |
+      #     if [ "${{ github.ref }}" = "refs/heads/master" ]; then
+      #       echo "tag=staging" >> $GITHUB_OUTPUT
+      #     elif [ "${{ github.ref }}" = "refs/heads/production" ]; then
+      #       echo "tag=production" >> $GITHUB_OUTPUT
+      #     else
+      #       echo "tag=dev-${{ github.sha }}" >> $GITHUB_OUTPUT
+      #     fi
+      #
+      # - name: Build and push to ECR
+      #   uses: docker/build-push-action@v5
+      #   with:
+      #     context: .
+      #     push: true
+      #     tags: |
+      #       ${{ steps.login-ecr.outputs.registry }}/hello-world:${{ steps.image-tag.outputs.tag }}
+      #       ${{ steps.login-ecr.outputs.registry }}/hello-world:${{ github.sha }}
+      #     cache-from: type=gha
+      #     cache-to: type=gha,mode=max
