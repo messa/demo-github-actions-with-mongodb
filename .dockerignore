@@ -16,11 +16,18 @@ build/
 .coverage
 htmlcov/
 
-# Virtual environments
+# Python virtual environments
 .venv
 venv/
 ENV/
 env/
+
+# Nodejs
+node_modules/
+
+# Docker
+*Dockerfile*
+*docker-compose*
 
 # IDE
 .vscode/
@@ -38,3 +45,8 @@ tests/
 # Temporary files
 *.log
 .DS_Store
+
+# Configuration
+conf/
+.env
+.env.*
